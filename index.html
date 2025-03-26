@@ -5,16 +5,18 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     </head>
     <body>
-        <div class="mb-3">
-            <label for="players" class="form-label">Players</label>
-            <input type="text" class="form-control" id="players" placeholder="e.g. Jim,James" onChange="calculateFixtures()">
-        </div>
+        <div class="container">
+            <div class="container mb-3">
+                <label for="players" class="form-label">Players</label>
+                <input type="text" class="form-control" id="players" placeholder="e.g. Jim,James" onChange="calculateFixtures()">
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">Fixtures / Scores</label>
-            <div id="fixtures">
-        </div>
-        
+            <div class="container mb-3">
+                <label class="form-label">Fixtures / Scores</label>
+                <div id="fixtures"/>
+            </div>
+            
+            </div>
         </div>
     </body>
     <script>
@@ -28,12 +30,14 @@
         combinationUtil (players,n,r,0,data,0,fixtures);
             fixturesHTML='';
         for (var i=0; i<fixtures.length; i++) {
-            fixturesHTML+='<div class="input-group row"> \
-            <span class="input-group-text col-4" id="Player1">'+fixtures[i][0]+'</span> \
-            <input type="text" class="form-control col-2" id="Steve1"> \
-            <span class="input-group-text col-4" id="Player2">'+fixtures[i][1]+'</span> \
-            <input type="text" class="form-control col-2" id="Duncan1"> \
-            </div>'
+            fixturesHTML+=' \
+            <div class="input-group"> \
+            <span class="input-group-text col-4">'+fixtures[i][0]+'</span> \
+            <input type="text" class="form-control col-2" id="P1'+i+'"> \
+            <span class="input-group-text col-4">'+fixtures[i][1]+'</span> \
+            <input type="text" class="form-control col-2" id="P2'+i+'"> \
+            </div> \
+            '
         }
             $("#fixtures").html(fixturesHTML);
         }
