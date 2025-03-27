@@ -124,9 +124,9 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][0]+'</span> \
-                <input type="text" class="form-control col-2 text-center" id="P-1-'+currentGames[i]+'"> \
+                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" id="P-1-'+currentGames[i]+'"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][1]+'</span> \
-                <input type="text" class="form-control col-2 text-center" id="P-2-'+currentGames[i]+'"> \
+                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" id="P-2-'+currentGames[i]+'"> \
                 <button type="button" class="btn btn-success col-2" onClick="postScore('+i+','+currentGames[i]+')"> \
                 	<i class="bi bi-check2"></i> \
                 </button> \
@@ -177,5 +177,23 @@
 					showCompletedGames();
           showResults();
         }
+
+        $("input.number-only").bind({
+          keydown: function(e) {
+              if (e.shiftKey === true ) {
+                  if (e.keyCode == 9) {
+                      return true;
+                  }
+                  return false;
+              }
+              if (e.keyCode > 57) {
+                  return false;
+              }
+              if (e.keyCode==32) {
+                  return false;
+              }
+              return true;
+          }
+        });
     </script>
 </html>
