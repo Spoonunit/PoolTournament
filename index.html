@@ -86,9 +86,9 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][0]+'</span> \
-                <input type="text" class="form-control col-2 '+colourP1+'" value="'+completedGames[i][1]+'" disabled> \
+                <input type="text" class="form-control col-2 '+colourP1+' text-center" value="'+completedGames[i][1]+'" disabled> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][1]+'</span> \
-                <input type="text" class="form-control col-2 '+colourP2+'" value="'+completedGames[i][2]+'" disabled> \
+                <input type="text" class="form-control col-2 '+colourP2+' text-center" value="'+completedGames[i][2]+'" disabled> \
                 <button type="button" class="btn btn-danger col-2"> \
                 	<i class="bi bi-pencil"></i> \
                 </button> \
@@ -124,9 +124,9 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][0]+'</span> \
-                <input type="text" class="form-control col-2" id="P-1-'+currentGames[i]+'"> \
+                <input type="text" class="form-control col-2 text-center" id="P-1-'+currentGames[i]+'"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][1]+'</span> \
-                <input type="text" class="form-control col-2" id="P-2-'+currentGames[i]+'"> \
+                <input type="text" class="form-control col-2 text-center" id="P-2-'+currentGames[i]+'"> \
                 <button type="button" class="btn btn-success col-2" onClick="postScore('+i+','+currentGames[i]+')"> \
                 	<i class="bi bi-check2"></i> \
                 </button> \
@@ -154,7 +154,7 @@
           	resultsHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-4">'+players[i]+'</span> \
-                <span class="input-group-text col-2">'+results[players[i]]+'</span> \
+                <span class="input-group-text col-2 text-center">'+results[players[i]]+'</span> \
 								</div>'
           }
           $("#results").html(resultsHTML);        
