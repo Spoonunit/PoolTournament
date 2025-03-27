@@ -7,60 +7,174 @@
     </head>
     <body>
         <div class="container">
-            <div class="container mb-3">
-                <label for="players" class="form-label">Players</label>
-                <input type="text" class="form-control" id="players" placeholder="e.g. Jim,James" onChange="calculateFixtures()">
+            <div class="container mb-3 mt-3">
+                <label class="form-label">Players</label>
+                <div class="input-group">
+                  <input type="text" class="form-control col-10" id="players" placeholder="e.g. Jim,James" onChange="calculateFixtures()">
+                  <button type="button" id="playerEntryLock" class="btn btn-success col-2" onClick="toggleLock()">
+                    <i class="bi bi-unlock" id="playerEntryLockIcon"></i>
+                  </button>
+                </div>
             </div>
-
-            <div class="container mb-3">
-                <label class="form-label">Fixtures / Scores</label>
-                <div id="fixtures"/>
+            <div class="mb-3 container">
+              <label class="form-label">Current Games</label>
+              <div id="playing"></div>
             </div>
-            
+            <div class="mb-3 container">
+              <label class="form-label">Completed Games</label>
+              <div id="completed"></div>
             </div>
-        </div>
+            <div class="mb-3 container">
+              <label class="form-label">Results</label>
+              <div id="results"></div>
+            </div>
+          </div>
     </body>
     <script>
+        var fixtures;
+        var playing;
+        var players;
+        var currentGames;
+        var completedGames
+        var results;
         function calculateFixtures()
         {
             players = $("#players").val().split(',');
-        r=2;
-        n=players.length;
-        data=new Array(r);
-        fixtures=new Array();
-        combinationUtil (players,n,r,0,data,0,fixtures);
+            r=2;
+            n=players.length;
+            data=new Array(r);
+            fixtures=new Array();
+            playing=new Array();
+            currentGames=new Array();
+            completedGames=new Array();
+            results=new Array();
+            combinationUtil (players,n,r,0,data,0);
+            console.log(fixtures);
+						calcCurrentGames();
+						showCurrentGames();
+            toggleLock();
+        }
+
+				function toggleLock() {
+        			$("#playerEntryLockIcon").toggleClass("bi-unlock").toggleClass("bi-lock").parent().toggleClass("btn-success").toggleClass("btn-danger").parent().find('input').prop('disabled', function(i, v) { return !v; });
+        }
+
+        function combinationUtil(arr,n,r,index,data,i) {
+          if (index == r) {
+              // fixture format [playerA, playerB, fixturePlayed]
+              fixtures[fixtures.length]=[data[0],data[1],false];
+              return;
+          }
+
+          if (i >= n) {
+              return;
+          }
+
+          data[index] = arr[i];
+          combinationUtil(arr, n, r, index+1, data, i+1);
+          combinationUtil(arr, n, r, index, data, i+1);
+        }
+
+        function showCompletedGames() {
+        // show completed games
+ 		        // show current games that should be played
             fixturesHTML='';
-        for (var i=0; i<fixtures.length; i++) {
-            fixturesHTML+=' \
-            <div class="input-group"> \
-            <span class="input-group-text col-4">'+fixtures[i][0]+'</span> \
-            <input type="text" class="form-control col-2" id="P-1-'+i+'"> \
-            <span class="input-group-text col-4">'+fixtures[i][1]+'</span> \
-            <input type="text" class="form-control col-2" id="P-2-'+i+'"> \
-            </div> \
-            '
-        }
-            $("#fixtures").html(fixturesHTML);
-        }
+            for (var i=0; i<completedGames.length; i++) {
+            		colourP1=completedGames[i][1]==2?'text-bg-success':'text-bg-secondary';
+            		colourP2=completedGames[i][2]==2?'text-bg-success':'text-bg-secondary';
+                fixturesHTML+=' \
+                <div class="input-group mb-1"> \
+                <span class="input-group-text col-4">'+fixtures[completedGames[i][0]][0]+'</span> \
+                <input type="text" class="form-control col-1 '+colourP1+'" value="'+completedGames[i][1]+'" disabled> \
+                <span class="input-group-text col-4">'+fixtures[completedGames[i][0]][1]+'</span> \
+                <input type="text" class="form-control col-1 '+colourP2+'" value="'+completedGames[i][2]+'" disabled> \
+                <button type="button" class="btn btn-danger col-2"> \
+                	<i class="bi bi-pencil"></i> \
+                </button> \
+                </div> \
+                '
+            }
+            $("#completed").html(fixturesHTML);        
 
-        function combinationUtil(arr,n,r,index,data,i,fixtures)
-        {
-        if (index == r)
-        {
-            fixtures[fixtures.length]=[data[0],data[1]];
-            return;
         }
 
-        if (i >= n)
-        {
-            return;
+        function calcCurrentGames() {
+            //calculate next game(s) from two players not playing
+            var found;
+            nGamesInMotion = currentGames.length;
+            for (var j=0; j<(Math.floor(players.length/2)-nGamesInMotion); j++) {
+		         		found=false;
+                for (var i=0; (i<fixtures.length)&&(!found); i++) {
+                    // next fixture up for consideration
+                    if (!playing.includes(fixtures[i][0]) && !playing.includes(fixtures[i][1]) && !fixtures[i][2]) {
+                        playing[playing.length]=fixtures[i][0];
+                        playing[playing.length]=fixtures[i][1];
+                        currentGames[currentGames.length]=i;
+                        found=true;
+                    }
+                }
+					  }
+        }
+        
+        function showCurrentGames() {
+ 		        // show current games that should be played
+            fixturesHTML='';
+            for (var i=0; i<currentGames.length; i++) {
+                fixturesHTML+=' \
+                <div class="input-group mb-1"> \
+                <span class="input-group-text col-4">'+fixtures[currentGames[i]][0]+'</span> \
+                <input type="text" class="form-control col-1" id="P-1-'+currentGames[i]+'"> \
+                <span class="input-group-text col-4">'+fixtures[currentGames[i]][1]+'</span> \
+                <input type="text" class="form-control col-1" id="P-2-'+currentGames[i]+'"> \
+                <button type="button" class="btn btn-success col-2" onClick="postScore('+i+','+currentGames[i]+')"> \
+                	<i class="bi bi-check2"></i> \
+                </button> \
+                </div> \
+                '
+            }
+            $("#playing").html(fixturesHTML);        
         }
 
-        data[index] = arr[i];
-        combinationUtil(arr, n, r, index+1, data, i+1,fixtures);
+        function showResults() {
+          // show results as of current completed game states
+          results=new Array();
+          for (var i=0; i<completedGames.length; i++) {
+						fixture=completedGames[i][0];
+            if (!(fixtures[fixture][0] in results)) results[fixtures[fixture][0]]=0;
+            if (!(fixtures[fixture][1] in results)) results[fixtures[fixture][1]]=0;
+            results[fixtures[fixture][0]]+=Number(completedGames[i][1]);
+            results[fixtures[fixture][1]]+=Number(completedGames[i][2]);
+          }
+          console.log(results);
+          resultsHTML="";
+          var players = Object.keys(results);
+    			players.sort();
+          for (var i=0; i<players.length; i++) {
+          	resultsHTML+=' \
+                <div class="input-group mb-1"> \
+                <span class="input-group-text col-4">'+players[i]+'</span> \
+                <span class="input-group-text col-2">'+results[players[i]]+'</span> \
+								</div>'
+          }
+          $("#results").html(resultsHTML);        
 
-        combinationUtil(arr, n, r, index, data, i+1,fixtures);
+        }
+        
+        function postScore(game,fixture) {
+          completedGames[completedGames.length]=[fixture,$('#P-1-'+fixture).val(),$('#P-2-'+fixture).val()];
+					//remove completed game from currentGames
+					currentGames.splice(game,1);
+          //put players back on the bench
+          playing.splice(playing.indexOf(fixtures[fixture][0]),1);
+          playing.splice(playing.indexOf(fixtures[fixture][1]),1);
+          // mark fixture as played
+          fixtures[fixture][2]=true;
+          // calc next game and show
+          calcCurrentGames();
+          showCurrentGames();
 
+					showCompletedGames();
+          showResults();
         }
     </script>
 </html>
