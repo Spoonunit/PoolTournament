@@ -178,22 +178,12 @@
           showResults();
         }
 
-        $("input.number-only").bind({
-          keydown: function(e) {
-              if (e.shiftKey === true ) {
-                  if (e.keyCode == 9) {
-                      return true;
-                  }
-                  return false;
-              }
-              if (e.keyCode > 57) {
-                  return false;
-              }
-              if (e.keyCode==32) {
-                  return false;
-              }
-              return true;
+
+        $("input.number-only").bind("input", function(e) {
+          console.log(e);
+          if(this.value>2 or this.value<0) {
+            return false;
           }
-        });
-    </script>
+        })
+</script>
 </html>
