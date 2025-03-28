@@ -124,16 +124,17 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][0]+'</span> \
-                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" id="P-1-'+currentGames[i]+'"> \
+                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" maxlength="1" id="P-1-'+currentGames[i]+'"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][1]+'</span> \
-                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" id="P-2-'+currentGames[i]+'"> \
+                <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" maxlength="1" id="P-2-'+currentGames[i]+'"> \
                 <button type="button" class="btn btn-success col-2" onClick="postScore('+i+','+currentGames[i]+')"> \
                 	<i class="bi bi-check2"></i> \
                 </button> \
                 </div> \
                 '
             }
-            $("#playing").html(fixturesHTML);        
+            $("#playing").html(fixturesHTML);
+            attachInputControls();    
         }
 
         function showResults() {
@@ -179,11 +180,13 @@
         }
 
 
-        $("input.number-only").bind("input", function(e) {
-          console.log(e);
-          if(this.value>2 || this.value<0) {
-            return false;
-          }
-        })
+        function attachInputControls () {
+          $("input.number-only").unbind("keypress");
+          $("input.number-only").bind("keypress", function(e) {
+            if(e.keyCode<48 || e.keyCode>50) {
+              return false;
+            }
+          })
+        }
 </script>
 </html>
