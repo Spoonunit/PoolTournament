@@ -218,7 +218,7 @@
         $(document).ready(function() {
           //parse any content supplied in search params
           params=new URLSearchParams(document.location.search);
-          $("#players").val(JSON.parse(params.get("players")).join());
+          $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
           completedGames=JSON.parse(params.get("completedGames"));
           calcCurrentGames();
           showCurrentGames();
