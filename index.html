@@ -40,7 +40,7 @@
         var results;
         function calculateFixtures()
         {
-            players = $("#players").val().split(',');
+            players = $("#players").val().split(',').map(function(item) {return item.trim()});
             r=2;
             n=players.length;
             data=new Array(r);
