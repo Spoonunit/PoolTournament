@@ -225,19 +225,22 @@
           //parse any content supplied in search params
           if (document.location.search!="") {
             params=new URLSearchParams(document.location.search);
-            $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
-            completedGames=JSON.parse(params.get("completedGames"));
-            for (var i=0; i<completedGames.length; i++) {
-              fixtures[completedGames[i][0]][2]=true;
-            }
-            currentGames=new Array();
-            playing=new Array();
-            calcCurrentGames();
-            showCurrentGames();
+            if (params.get("players")==null) {
+              $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
+              if (params.get("completedGames")==null) {
+                completedGames=JSON.parse(params.get("completedGames"));
+                for (var i=0; i<completedGames.length; i++) {
+                  fixtures[completedGames[i][0]][2]=true;
+                }
+                currentGames=new Array();
+                playing=new Array();
+                calcCurrentGames();
+                showCurrentGames();
 
-            showCompletedGames();
-            showResults();
-            clipboardTournamentState();
+                showCompletedGames();
+                showResults();
+              }
+            }
           }
         })
 </script>
