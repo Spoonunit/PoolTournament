@@ -31,7 +31,13 @@
             </div>
             <div class="mb-3 container">
               <label class="form-label">Tournament State</label>
-              <div id="tournamentState"></div>
+              <div id="tournamentState">
+                <div class="row">
+                  <button type="button" class="btn btn-success col-2" onClick="clipboardTournamentState()"> \
+                    <i class="bi bi-clipboard"></i> \
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
     </body>
@@ -193,7 +199,7 @@
 
             showCompletedGames();
             showResults();
-            clipboardTournamentState();
+            //clipboardTournamentState();
           }
         }
 
