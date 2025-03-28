@@ -26,7 +26,11 @@
               <div id="completed"></div>
             </div>
             <div class="mb-3 container">
-              <label class="form-label">Results</label>
+              <label class="form-label">Match Results</label>
+              <div id="matchResults"></div>
+            </div>
+            <div class="mb-3 container">
+              <label class="form-label">Frame Results</label>
               <div id="results"></div>
             </div>
             <div class="mb-3 container">
@@ -46,6 +50,7 @@
         var currentGames;
         var completedGames
         var results;
+        var matchResults;
 
         function calculateFixtures()
         {
@@ -58,6 +63,7 @@
             currentGames=new Array();
             completedGames=new Array();
             results=new Array();
+            matchResults=new Array();
             combinationUtil (players,n,r,0,data,0);
             console.log(fixtures);
 						calcCurrentGames();
@@ -146,7 +152,7 @@
             attachInputControls();    
         }
 
-        function showResults() {
+        function showFrameResults() {
           // show results as of current completed game states
           results=new Array();
           for (var i=0; i<completedGames.length; i++) {
@@ -168,9 +174,35 @@
 								</div>'
           }
           $("#results").html(resultsHTML);        
-
+          showMatchResults();
         }
-        
+
+        function showMatchResults() {
+          // show results as of current completed game states
+          matchResults=new Array();
+          for (var i=0; i<completedGames.length; i++) {
+						fixture=completedGames[i][0];
+            if (!(fixtures[fixture][0] in results)) matchResults[fixtures[fixture][0]]=0;
+            if (!(fixtures[fixture][1] in results)) matchResults[fixtures[fixture][1]]=0;
+            if (completedGames[i][1]==2) {
+              matchResults[fixtures[fixture][0]]+=1;
+            } else {
+              matchResults[fixtures[fixture][1]]+=1;
+            }
+          }
+          resultsHTML="";
+          var players = Object.keys(matchResults);
+    			players.sort();
+          for (var i=0; i<players.length; i++) {
+          	resultsHTML+=' \
+                <div class="input-group mb-1"> \
+                <span class="input-group-text col-4">'+players[i]+'</span> \
+                <span class="input-group-text col-2 text-center">'+matchResults[players[i]]+'</span> \
+								</div>'
+          }
+          $("#matchResults").html(resultsHTML);
+        }
+
         function postScore(game,fixture) {
         	//trap invalid score posts
           //score without a 2
@@ -196,7 +228,7 @@
             showCurrentGames();
 
             showCompletedGames();
-            showResults();
+            showFrameResults();
             //clipboardTournamentState();
           }
         }
@@ -236,7 +268,7 @@
                 showCurrentGames();
 
                 showCompletedGames();
-                showResults();
+                showFrameResults();
               }
             }
           }
