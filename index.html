@@ -29,6 +29,10 @@
               <label class="form-label">Results</label>
               <div id="results"></div>
             </div>
+            <div class="mb-3 container">
+              <label class="form-label">Tournament State</label>
+              <div id="tournamentState"></div>
+            </div>
           </div>
     </body>
     <script>
@@ -188,6 +192,7 @@
 
             showCompletedGames();
             showResults();
+            clipboardTournamentState();
           }
         }
 
@@ -199,6 +204,14 @@
               return false;
             }
           })
+        }
+
+        function clipboardTournamentState () {
+          baseURL=document.location.origin+document.location.pathname;
+          playersString=JSON.stringify(players);
+          completedGamesString=JSON.stringify(completedGames);
+          URLParams=new URLSearchParams([["players",playersString],["completedGames",completedGamesString]]);
+          navigator.clipboard.writeText(baseURL+"?"+URLParams);
         }
 </script>
 </html>
