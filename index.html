@@ -127,7 +127,7 @@
                 <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" maxlength="1" id="P-1-'+currentGames[i]+'"> \
                 <span class="input-group-text col-3">'+fixtures[currentGames[i]][1]+'</span> \
                 <input type="text" inputmode="numeric" class="form-control col-2 text-center number-only" maxlength="1" id="P-2-'+currentGames[i]+'"> \
-                <button type="button" class="btn btn-success col-2" onClick="postScore('+i+','+currentGames[i]+')"> \
+                <button type="button" class="btn btn-success col-2" id="postScore'+i+'" onClick="postScore('+i+','+currentGames[i]+')"> \
                 	<i class="bi bi-check2"></i> \
                 </button> \
                 </div> \
@@ -163,20 +163,32 @@
         }
         
         function postScore(game,fixture) {
-          completedGames[completedGames.length]=[fixture,$('#P-1-'+fixture).val(),$('#P-2-'+fixture).val()];
-					//remove completed game from currentGames
-					currentGames.splice(game,1);
-          //put players back on the bench
-          playing.splice(playing.indexOf(fixtures[fixture][0]),1);
-          playing.splice(playing.indexOf(fixtures[fixture][1]),1);
-          // mark fixture as played
-          fixtures[fixture][2]=true;
-          // calc next game and show
-          calcCurrentGames();
-          showCurrentGames();
+        	//trap invalid score posts
+          //score without a 2
+          score1=Number($('#P-1-'+fixture).val());
+          score2=Number($('#P-2-'+fixture).val());
+          if ((score1!=2 && score2!=2) || (score1==2 && score2==2)) {
+          	$("#postScore"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
+            setTimeout(function(){
+            	$("#postScore"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
+            },1000)
+          } else {
+            //both scores 2
+            completedGames[completedGames.length]=[fixture,score1,score2];
+            //remove completed game from currentGames
+            currentGames.splice(game,1);
+            //put players back on the bench
+            playing.splice(playing.indexOf(fixtures[fixture][0]),1);
+            playing.splice(playing.indexOf(fixtures[fixture][1]),1);
+            // mark fixture as played
+            fixtures[fixture][2]=true;
+            // calc next game and show
+            calcCurrentGames();
+            showCurrentGames();
 
-					showCompletedGames();
-          showResults();
+            showCompletedGames();
+            showResults();
+          }
         }
 
 
