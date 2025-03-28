@@ -221,6 +221,7 @@
           $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
           completedGames=JSON.parse(params.get("completedGames"));
           currentGames=new Array();
+          playing=new Array();
           calcCurrentGames();
           showCurrentGames();
 
