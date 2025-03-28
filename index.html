@@ -225,9 +225,9 @@
           //parse any content supplied in search params
           if (document.location.search!="") {
             params=new URLSearchParams(document.location.search);
-            if (params.get("players")==null) {
+            if (params.get("players")!=null) {
               $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
-              if (params.get("completedGames")==null) {
+              if (params.get("completedGames")!=null) {
                 completedGames=JSON.parse(params.get("completedGames"));
                 for (var i=0; i<completedGames.length; i++) {
                   fixtures[completedGames[i][0]][2]=true;
