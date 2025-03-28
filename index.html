@@ -42,6 +42,7 @@
         var currentGames;
         var completedGames
         var results;
+
         function calculateFixtures()
         {
             players = $("#players").val().split(',').map(function(item) {return item.trim()});
@@ -213,5 +214,18 @@
           URLParams=new URLSearchParams([["players",playersString],["completedGames",completedGamesString]]);
           navigator.clipboard.writeText(baseURL+"?"+URLParams);
         }
+
+        $(document).ready(function() {
+          //parse any content supplied in search params
+          params=new URLSearchParams(document.location.search);
+          $("#players").val(JSON.parse(params.get("players")).join());
+          completedGames=JSON.parse(params.get("completedGames"));
+          calcCurrentGames();
+          showCurrentGames();
+
+          showCompletedGames();
+          showResults();
+          clipboardTournamentState();
+        })
 </script>
 </html>
