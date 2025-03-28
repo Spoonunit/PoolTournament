@@ -221,7 +221,7 @@
             params=new URLSearchParams(document.location.search);
             $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
             completedGames=JSON.parse(params.get("completedGames"));
-            for (var i=0; i<completedGames.length()) {
+            for (var i=0; i<completedGames.length(); i++) {
               fixtures[completedGames[i]][2]=true;
             }
             currentGames=new Array();
