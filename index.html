@@ -182,8 +182,8 @@
           matchResults=new Array();
           for (var i=0; i<completedGames.length; i++) {
 						fixture=completedGames[i][0];
-            if (!(fixtures[fixture][0] in results)) matchResults[fixtures[fixture][0]]=0;
-            if (!(fixtures[fixture][1] in results)) matchResults[fixtures[fixture][1]]=0;
+            if (!(fixtures[fixture][0] in matchResults)) matchResults[fixtures[fixture][0]]=0;
+            if (!(fixtures[fixture][1] in matchResults)) matchResults[fixtures[fixture][1]]=0;
             if (completedGames[i][1]==2) {
               matchResults[fixtures[fixture][0]]+=1;
             } else {
