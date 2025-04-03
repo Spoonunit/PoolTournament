@@ -201,13 +201,20 @@
             results[fixtures[fixture][1]]+=Number(completedGames[i][2]);
           }
           resultsHTML="";
-          var players = Object.keys(results);
-    			players.sort();
-          for (var i=0; i<players.length; i++) {
+          var orderedResults = [];
+          for (var key in results) orderedResults.push([key, results[key]]);
+
+          orderedResults.sort(function(a, b) {
+              a = a[1];
+              b = b[1];
+
+              return a > b ? -1 : (a < b ? 1 : 0);
+          });
+          for (var i=0; i<orderedResults.length; i++) {
           	resultsHTML+=' \
                 <div class="input-group mb-1"> \
-                <span class="input-group-text col-4">'+players[i]+'</span> \
-                <span class="input-group-text col-2 text-center">'+results[players[i]]+'</span> \
+                <span class="input-group-text col-4">'+orderedResults[i][0]+'</span> \
+                <span class="input-group-text col-2 text-center">'+orderedResults[i][1]+'</span> \
 								</div>'
           }
           $("#results").html(resultsHTML);        
@@ -228,13 +235,20 @@
             }
           }
           resultsHTML="";
-          var players = Object.keys(matchResults);
-    			players.sort();
-          for (var i=0; i<players.length; i++) {
+          var orderedResults = [];
+          for (var key in matchResults) orderedResults.push([key, matchResults[key]]);
+
+          orderedResults.sort(function(a, b) {
+              a = a[1];
+              b = b[1];
+
+              return a > b ? -1 : (a < b ? 1 : 0);
+          });
+          for (var i=0; i<orderedResults.length; i++) {
           	resultsHTML+=' \
                 <div class="input-group mb-1"> \
-                <span class="input-group-text col-4">'+players[i]+'</span> \
-                <span class="input-group-text col-2 text-center">'+matchResults[players[i]]+'</span> \
+                <span class="input-group-text col-4">'+orderedResults[i][0]+'</span> \
+                <span class="input-group-text col-2 text-center">'+orderedResults[i][1]+'</span> \
 								</div>'
           }
           $("#matchResults").html(resultsHTML);
