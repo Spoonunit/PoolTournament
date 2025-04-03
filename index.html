@@ -52,6 +52,7 @@
         var results;
         var matchResults;
         var playersChanged=false;
+        var changedCompletedGame;
 
         function calculateFixtures()
         {
@@ -65,6 +66,7 @@
             completedGames=new Array();
             results=new Array();
             matchResults=new Array();
+            changedCompletedGame=new Array();
             combinationUtil (players,n,r,0,data,0);
 						calcCurrentGames();
 						showCurrentGames();
@@ -110,10 +112,10 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][0]+'</span> \
-                <input type="text" class="form-control col-2 '+colourP1+' text-center" value="'+completedGames[i][1]+'" disabled> \
+                <input id="P1-'+i+'" type="text" class="form-control col-2 '+colourP1+' text-center" value="'+completedGames[i][1]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][1]+'</span> \
-                <input type="text" class="form-control col-2 '+colourP2+' text-center" value="'+completedGames[i][2]+'" disabled> \
-                <button type="button" class="btn btn-danger col-2"> \
+                <input id="P2-'+i+'" type="text" class="form-control col-2 '+colourP2+' text-center" value="'+completedGames[i][2]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
+                <button type="button" class="btn btn-danger col-2" onClick="toggleCompletedGameEditableState('+i+')"> \
                 	<i class="bi bi-unlock"></i> \
                 </button> \
                 </div> \
@@ -209,6 +211,10 @@
 								</div>'
           }
           $("#matchResults").html(resultsHTML);
+        }
+
+        function toggleCompletedGameEditableState(game) {
+          console.log(i);
         }
 
         function postScore(game,fixture) {
