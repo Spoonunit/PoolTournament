@@ -11,7 +11,7 @@
             <div class="container mb-3 mt-3">
                 <label class="form-label">Players</label>
                 <div class="input-group">
-                  <input type="text" class="form-control col-10" id="players" placeholder="e.g. Jim,James" onChange="calculateFixtures()">
+                  <input type="text" class="form-control col-10" id="players" placeholder="e.g. Jim,James" onChange="playersChanged=true">
                   <button type="button" id="playerEntryLock" class="btn btn-success col-2" onClick="toggleLock()">
                     <i class="bi bi-check2" id="playerEntryLockIcon"></i>
                   </button>
@@ -51,6 +51,7 @@
         var completedGames
         var results;
         var matchResults;
+        var playersChanged=false;
 
         function calculateFixtures()
         {
@@ -76,6 +77,10 @@
               $("#playerEntryLockIcon").toggleClass("bi-unlock",lockState).toggleClass("bi-check2",!lockState).parent().toggleClass("btn-danger",lockState).toggleClass("btn-success",!lockState).parent().find('input').prop('disabled', lockState);
           } else {
             $("#playerEntryLockIcon").toggleClass("bi-check2 bi-unlock").parent().toggleClass("btn-success btn-danger").parent().find('input').prop('disabled', function(i, v) { return !v; });
+          }
+          if (playersChanged) {
+            calculateFixtures();
+            playersChanged=false;
           }
         }
 
