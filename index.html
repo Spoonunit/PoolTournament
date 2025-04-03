@@ -296,6 +296,7 @@
               $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
               if (params.get("completedGames")!=null) {
                 completedGames=JSON.parse(params.get("completedGames"));
+                fixtures=new Array();
                 for (var i=0; i<completedGames.length; i++) {
                   fixtures[completedGames[i][0]][2]=true;
                 }
