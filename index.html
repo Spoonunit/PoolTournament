@@ -112,9 +112,9 @@
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][0]+'</span> \
-                <input id="P1-'+i+'" type="text" class="form-control col-2 '+colourP1+' text-center" value="'+completedGames[i][1]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
+                <input id="P1-'+i+'" type="text" inputmode="numeric" maxlength="1" class="form-control col-2 '+colourP1+' text-center number-only" value="'+completedGames[i][1]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][1]+'</span> \
-                <input id="P2-'+i+'" type="text" class="form-control col-2 '+colourP2+' text-center" value="'+completedGames[i][2]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
+                <input id="P2-'+i+'" type="text" inputmode="numeric" maxlength="1" class="form-control col-2 '+colourP2+' text-center number-only" value="'+completedGames[i][2]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
                 <button type="button" class="btn btn-danger col-2" onClick="toggleCompletedGameEditableState('+i+')"> \
                 	<i class="bi bi-unlock" id="completedGameIcon-'+i+'"></i> \
                 </button> \
@@ -126,8 +126,20 @@
         }
 
         function toggleCompletedGameEditableState(game) {
-          console.log(game);
           $("#completedGameIcon-"+game).toggleClass("bi-check2 bi-unlock").parent().toggleClass("btn-success btn-danger").parent().find("input#P1-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false).parent().find("input#P2-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false);
+          if (changedCompletedGame[game]) {
+            completedGames[game][1]=Number($("#P1-"+game).val());
+            completedGames[game][2]=Number($("#P2-"+game).val());
+            changedCompletedGame[game]=false;
+            showCompletedGames();
+            showFrameResults();
+          }
+          if ($("#completedGameIcon-"+game).hasClass("bi-check2")) {
+            showCompletedGames();
+            showFrameResults();
+          } else {
+            attachInputControls();
+          }
         }
 
         function calcCurrentGames() {
