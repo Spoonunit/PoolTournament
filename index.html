@@ -126,19 +126,29 @@
         }
 
         function toggleCompletedGameEditableState(game) {
-          $("#completedGameIcon-"+game).toggleClass("bi-check2 bi-unlock").parent().toggleClass("btn-success btn-danger").parent().find("input#P1-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false).parent().find("input#P2-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false);
-          if (changedCompletedGame[game]) {
-            completedGames[game][1]=Number($("#P1-"+game).val());
-            completedGames[game][2]=Number($("#P2-"+game).val());
-            changedCompletedGame[game]=false;
-            showCompletedGames();
-            showFrameResults();
-          }
-          if ($("#completedGameIcon-"+game).hasClass("bi-unlock")) {
-            showCompletedGames();
-            showFrameResults();
+          score1=Number($('#P1-'+game).val());
+          score2=Number($('#P2-'+game).val());
+          if ((score1!=2 && score2!=2) || (score1==2 && score2==2)) {
+          	$("#completedGameIcon"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
+            setTimeout(function(){
+            	$("#completedGameIcon"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
+            },1000)
           } else {
-            attachInputControls();
+            $("#completedGameIcon-"+game).toggleClass("bi-check2 bi-unlock").parent().toggleClass("btn-success btn-danger").parent().find("input#P1-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false).parent().find("input#P2-"+game).prop('disabled', function(i, v) { return !v; }).toggleClass("text-bg-success text-bg-secondary",false);
+
+            if (changedCompletedGame[game]) {
+              completedGames[game][1]=Number($("#P1-"+game).val());
+              completedGames[game][2]=Number($("#P2-"+game).val());
+              changedCompletedGame[game]=false;
+              showCompletedGames();
+              showFrameResults();
+            }
+            if ($("#completedGameIcon-"+game).hasClass("bi-unlock")) {
+              showCompletedGames();
+              showFrameResults();
+            } else {
+              attachInputControls();
+            }
           }
         }
 
