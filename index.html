@@ -116,13 +116,18 @@
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][1]+'</span> \
                 <input id="P2-'+i+'" type="text" class="form-control col-2 '+colourP2+' text-center" value="'+completedGames[i][2]+'" disabled onChange="changedCompletedGame['+i+']=true"> \
                 <button type="button" class="btn btn-danger col-2" onClick="toggleCompletedGameEditableState('+i+')"> \
-                	<i class="bi bi-unlock"></i> \
+                	<i class="bi bi-unlock" id="completedGameIcon-'+i+'"></i> \
                 </button> \
                 </div> \
                 '
             }
             $("#completed").html(fixturesHTML);        
 
+        }
+
+        function toggleCompletedGameEditableState(game) {
+          console.log(game);
+          $("#completedGameIcon-"+game).toggleClass("bi-check2 bi-unlock").parent().toggleClass("btn-success btn-danger",false).parent().find("input#P1-"+i).prop('disabled', function(i, v) { return !v; }).parent().find("input#P2-"+i).prop('disabled', function(i, v) { return !v; });
         }
 
         function calcCurrentGames() {
@@ -211,10 +216,6 @@
 								</div>'
           }
           $("#matchResults").html(resultsHTML);
-        }
-
-        function toggleCompletedGameEditableState(game) {
-          console.log(i);
         }
 
         function postScore(game,fixture) {
