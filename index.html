@@ -18,7 +18,8 @@
                 </div>
             </div>
             <div class="mb-3 container">
-              <label class="form-label">Current Games</label>
+              <label class="form-label">Current Games</label>&nbsp;
+              <label id="gamesRemaining" class="form-label"></label>
               <div id="playing"></div>
             </div>
             <div class="mb-3 container">
@@ -168,6 +169,7 @@
                     }
                 }
 					  }
+            $("#gamesRemaining").html("- "+fixtures.length-completedGames.length+" left to play")
         }
         
         function showCurrentGames() {
