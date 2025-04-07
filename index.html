@@ -323,12 +323,16 @@
 
         function restart() {
           // reload with current firstTo and players
+          baseURL=document.location.origin+document.location.pathname;
+          playersString=JSON.stringify(players);
           URLParams=new URLSearchParams([["players",playersString],["firstTo",maxFrames]]);
           document.location=baseURL+"?"+URLParams;
         }
 
         function suddenDeath() {
           // reload with firstTo=1 and current players
+          baseURL=document.location.origin+document.location.pathname;
+          playersString=JSON.stringify(players);
           URLParams=new URLSearchParams([["players",playersString],["firstTo",1]]);
           document.location=baseURL+"?"+URLParams;
         }
