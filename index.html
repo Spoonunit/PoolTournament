@@ -88,8 +88,8 @@
           }
         }
 
-        function combinationUtil(arr,n,r,index,data,i) {
-          if (index == r) {
+        function combinationUtil(arr,n,maxFrames,index,data,i) {
+          if (index == maxFrames) {
               // fixture format [playerA, playerB, fixturePlayed]
               fixtures[fixtures.length]=[data[0],data[1],false];
               return;
@@ -100,8 +100,8 @@
           }
 
           data[index] = arr[i];
-          combinationUtil(arr, n, r, index+1, data, i+1);
-          combinationUtil(arr, n, r, index, data, i+1);
+          combinationUtil(arr, n, maxFrames, index+1, data, i+1);
+          combinationUtil(arr, n, maxFrames, index, data, i+1);
         }
 
         function showCompletedGames() {
