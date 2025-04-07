@@ -61,7 +61,7 @@
             players = $("#players").val().split(',').map(function(item) {return item.trim()});
             if (maxFrames==0) maxFrames=2; // default frames per match;
             n=players.length;
-            data=new Array(2);
+            data=new Array(n);
             fixtures=new Array();
             playing=new Array();
             currentGames=new Array();
@@ -69,7 +69,7 @@
             results=new Array();
             matchResults=new Array();
             changedCompletedGame=new Array();
-            combinationUtil (players,n,maxFrames,0,data,0);
+            combinationUtil (players,n,2,0,data,0);
 						calcCurrentGames();
 						showCurrentGames();
             showCompletedGames();
@@ -88,8 +88,8 @@
           }
         }
 
-        function combinationUtil(arr,n,maxFrames,index,data,i) {
-          if (index == maxFrames) {
+        function combinationUtil(arr,n,r,index,data,i) {
+          if (index == r) {
               // fixture format [playerA, playerB, fixturePlayed]
               fixtures[fixtures.length]=[data[0],data[1],false];
               return;
@@ -100,8 +100,8 @@
           }
 
           data[index] = arr[i];
-          combinationUtil(arr, n, maxFrames, index+1, data, i+1);
-          combinationUtil(arr, n, maxFrames, index, data, i+1);
+          combinationUtil(arr, n, r, index+1, data, i+1);
+          combinationUtil(arr, n, r, index, data, i+1);
         }
 
         function showCompletedGames() {
