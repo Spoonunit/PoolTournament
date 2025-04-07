@@ -301,7 +301,7 @@
           baseURL=document.location.origin+document.location.pathname;
           playersString=JSON.stringify(players);
           completedGamesString=JSON.stringify(completedGames);
-          URLParams=new URLSearchParams([["players",playersString],["completedGames",completedGamesString]]);
+          URLParams=new URLSearchParams([["players",playersString],["completedGames",completedGamesString],["firstTo",maxFrames]]);
           navigator.clipboard.writeText(baseURL+"?"+URLParams);
         }
 
@@ -309,8 +309,8 @@
           //parse any content supplied in search params
           if (document.location.search!="") {
             params=new URLSearchParams(document.location.search);
-            if (params.get("frames")!=null) {
-              maxFrames=Number(params.get("frames"));
+            if (params.get("firstTo")!=null) {
+              maxFrames=Number(params.get("firstTo"));
               if (maxFrames>9) maxFrames=9; // max frames 9
               if (maxFrames<1) maxFrames=1; // min frames 1
             }
