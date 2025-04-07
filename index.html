@@ -54,11 +54,12 @@
         var matchResults;
         var playersChanged=false;
         var changedCompletedGame;
+        var maxFrames=0;
 
         function calculateFixtures()
         {
             players = $("#players").val().split(',').map(function(item) {return item.trim()});
-            r=2;
+            if (maxFrames==0) maxFrames=2; // default frames per match;
             n=players.length;
             data=new Array(r);
             fixtures=new Array();
@@ -68,7 +69,7 @@
             results=new Array();
             matchResults=new Array();
             changedCompletedGame=new Array();
-            combinationUtil (players,n,r,0,data,0);
+            combinationUtil (players,n,maxFrames,0,data,0);
 						calcCurrentGames();
 						showCurrentGames();
             showCompletedGames();
@@ -108,8 +109,8 @@
  		        // show current games that should be played
             fixturesHTML='';
             for (var i=0; i<completedGames.length; i++) {
-            		colourP1=completedGames[i][1]==2?'text-bg-success':'text-bg-secondary';
-            		colourP2=completedGames[i][2]==2?'text-bg-success':'text-bg-secondary';
+            		colourP1=completedGames[i][1]==maxFrames?'text-bg-success':'text-bg-secondary';
+            		colourP2=completedGames[i][2]==maxFrames?'text-bg-success':'text-bg-secondary';
                 fixturesHTML+=' \
                 <div class="input-group mb-1"> \
                 <span class="input-group-text col-3">'+fixtures[completedGames[i][0]][0]+'</span> \
@@ -129,7 +130,7 @@
         function toggleCompletedGameEditableState(game) {
           score1=Number($('#P1-'+game).val());
           score2=Number($('#P2-'+game).val());
-          if ((score1!=2 && score2!=2) || (score1==2 && score2==2)) {
+          if ((score1!=maxFrames && score2!=maxFrames) || (score1==maxFrames && score2==maxFrames)) {
           	$("#completedGameIcon-"+game).parent().toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
             setTimeout(function(){
             	$("#completedGameIcon-"+game).parent().toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
@@ -230,7 +231,7 @@
 						fixture=completedGames[i][0];
             if (!(fixtures[fixture][0] in matchResults)) matchResults[fixtures[fixture][0]]=0;
             if (!(fixtures[fixture][1] in matchResults)) matchResults[fixtures[fixture][1]]=0;
-            if (completedGames[i][1]==2) {
+            if (completedGames[i][1]==maxFrames) {
               matchResults[fixtures[fixture][0]]+=1;
             } else {
               matchResults[fixtures[fixture][1]]+=1;
@@ -261,7 +262,7 @@
           //score without a 2
           score1=Number($('#P-1-'+fixture).val());
           score2=Number($('#P-2-'+fixture).val());
-          if ((score1!=2 && score2!=2) || (score1==2 && score2==2)) {
+          if ((score1!=maxFrames && score2!=maxFrames) || (score1==maxFrames && score2==maxFrames)) {
           	$("#postScore"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
             setTimeout(function(){
             	$("#postScore"+game).toggleClass("btn-success").toggleClass("btn-danger").prop('disabled', function(i, v) { return !v; });
@@ -308,6 +309,11 @@
           //parse any content supplied in search params
           if (document.location.search!="") {
             params=new URLSearchParams(document.location.search);
+            if (params.get("frames")!=null) {
+              maxFrames=Number(params.get("frames"));
+              if (maxFrames>9) maxFrames=9; // max frames 9
+              if (maxFrames<1) maxFrames=1; // min frames 1
+            }
             if (params.get("players")!=null) {
               $("#players").val(JSON.parse(params.get("players")).join()).trigger('change');
               $("#playerEntryLock").trigger('click');
