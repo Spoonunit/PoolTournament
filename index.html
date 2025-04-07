@@ -291,7 +291,7 @@
         function attachInputControls () {
           $("input.number-only").unbind("keypress");
           $("input.number-only").bind("keypress", function(e) {
-            if(e.keyCode<48 || e.keyCode>50) {
+            if(e.keyCode<48 || e.keyCode>(48+maxFrames)) {
               return false;
             }
           })
